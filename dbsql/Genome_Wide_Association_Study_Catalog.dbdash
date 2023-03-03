@@ -1,0 +1,979 @@
+{
+  "queries": [
+    {
+      "id": "0e89e44a-3e53-4496-81f7-9870daed6065",
+      "name": "Distributions of associations",
+      "description": "",
+      "query": "with T2 as (\n  with T1 as (\n    with T as (\n      select\n        *\n      from\n        gwas_catalog.full\n      where\n        cast(DATE as Date) <= '{{ Year }}'\n    ) (\n      select\n        explode(split(CONTEXT, \"[,;]\")) as CONTEXT\n      from\n        T\n    )\n  )\n  select\n    count(CONTEXT) as count,\n    CONTEXT\n  from\n    T1\n  group by\n    CONTEXT\n  order by\n    count\n)\nselect\n  *\nfrom\n  T2\nwhere\n  count > 100",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337117356",
+        "visualization_control_order": [
+          "Year"
+        ],
+        "catalog": "hive_metastore",
+        "schema": "default",
+        "parameters": [
+          {
+            "title": "Year",
+            "name": "Year",
+            "type": "date",
+            "global": false,
+            "locals": [],
+            "urlPrefix": "p_",
+            "value": "2023-01-31",
+            "$$value": "2023-01-31T16:22:39.880Z"
+          }
+        ]
+      },
+      "visualizations": [
+        {
+          "id": "03b7a008-d47b-40e2-bdfe-47f921e20f63",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        },
+        {
+          "id": "05ed584c-1679-4716-b5fe-08b0b97ee951",
+          "type": "CHART",
+          "name": "Variant type",
+          "description": "",
+          "options": {
+            "version": 2,
+            "globalSeriesType": "column",
+            "sortX": false,
+            "sortY": true,
+            "legend": {
+              "traceorder": "normal"
+            },
+            "xAxis": {
+              "type": "-",
+              "labels": {
+                "enabled": true
+              }
+            },
+            "yAxis": [
+              {
+                "type": "logarithmic"
+              },
+              {
+                "type": "-",
+                "opposite": true
+              }
+            ],
+            "alignYAxesAtZero": true,
+            "error_y": {
+              "type": "data",
+              "visible": true
+            },
+            "series": {
+              "stacking": null,
+              "error_y": {
+                "type": "data",
+                "visible": true
+              }
+            },
+            "seriesOptions": {
+              "column_a681056915629": {
+                "name": "count",
+                "yAxis": 0,
+                "color": "#981717"
+              }
+            },
+            "valuesOptions": {},
+            "direction": {
+              "type": "counterclockwise"
+            },
+            "sizemode": "diameter",
+            "coefficient": 1,
+            "numberFormat": "0,0[.]00000",
+            "percentFormat": "0[.]00%",
+            "textFormat": "",
+            "missingValuesAsZero": true,
+            "useAggregationsUi": true,
+            "swappedAxes": false,
+            "dateTimeFormat": "YYYY-MM-DD HH:mm",
+            "showDataLabels": false,
+            "columnConfigurationMap": {
+              "x": {
+                "column": "CONTEXT",
+                "id": "column_a681056915628"
+              },
+              "y": [
+                {
+                  "column": "count",
+                  "transform": "SUM",
+                  "id": "column_a681056915629"
+                }
+              ]
+            },
+            "isAggregationOn": true,
+            "condensed": true,
+            "withRowNumber": true
+          },
+          "query_plan": {
+            "selects": [
+              {
+                "column": "CONTEXT"
+              },
+              {
+                "function": "SUM",
+                "args": [
+                  {
+                    "column": "count"
+                  }
+                ],
+                "alias": "column_a681056915629"
+              }
+            ],
+            "groups": [
+              {
+                "column": "CONTEXT"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "0fd9a6c0-9cd5-430c-bdca-9a347264543e",
+      "name": "Warmup JVM",
+      "description": "",
+      "query": "DESCRIBE DATABASE gwas_catalog;\nSHOW TABLES FROM gwas_catalog;\n\n",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337117967",
+        "visualization_control_order": [],
+        "catalog": "hive_metastore",
+        "schema": "default",
+        "parameters": []
+      },
+      "visualizations": [
+        {
+          "id": "3196e705-6a10-4715-bb10-de4f4116b4cd",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        }
+      ]
+    },
+    {
+      "id": "65f542e9-28a5-47d0-a4c9-8949d989c68c",
+      "name": "Study Counts",
+      "description": null,
+      "query": "with T as (\n  select\n    count(PUBMEDID) as count,\n    PUBMEDID\n  from\n    gwas_catalog.full\n  where\n    cast(DATE as Date) <= '{{ Year }}'\n  group by\n    PUBMEDID\n)\nselect\n  count(*)\nfrom\n  T",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337117010",
+        "visualization_control_order": [
+          "Year"
+        ],
+        "catalog": "hive_metastore",
+        "schema": "default",
+        "parameters": [
+          {
+            "title": "Year",
+            "name": "Year",
+            "type": "date",
+            "global": false,
+            "locals": [],
+            "urlPrefix": "p_",
+            "value": "2023-01-31",
+            "$$value": "2023-01-31T06:00:00.000Z"
+          }
+        ]
+      },
+      "visualizations": [
+        {
+          "id": "68221177-fa55-41c7-9460-04797b938f81",
+          "type": "COUNTER",
+          "name": "Articles",
+          "description": "",
+          "options": {
+            "counterLabel": "",
+            "counterColName": "count(1)",
+            "rowNumber": 1,
+            "targetRowNumber": 1,
+            "stringDecimal": 0,
+            "stringDecChar": ".",
+            "stringThouSep": ",",
+            "tooltipFormat": "0,0.000"
+          },
+          "query_plan": null
+        },
+        {
+          "id": "967e992e-fef0-4c9f-960d-0b1eb9ed2216",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        }
+      ]
+    },
+    {
+      "id": "94b78d7f-9b7f-46c6-a819-d4b224f0da92",
+      "name": "Diseases / traits",
+      "description": "",
+      "query": "select\n  count(`DISEASE/TRAIT`) as count,\n  `DISEASE/TRAIT`\nfrom\n  gwas_catalog.full\nwhere\n  cast(DATE as Date) <= '{{ Year }}'\ngroup by\n  `DISEASE/TRAIT`\norder by\n  count desc",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337117355",
+        "visualization_control_order": [
+          "Year"
+        ],
+        "catalog": "hive_metastore",
+        "schema": "default",
+        "parameters": [
+          {
+            "title": "Year",
+            "name": "Year",
+            "type": "date",
+            "global": false,
+            "parentQueryId": "94b78d7f-9b7f-46c6-a819-d4b224f0da92",
+            "locals": [],
+            "urlPrefix": "p_",
+            "value": "2023-01-31",
+            "$$value": "2023-01-31T06:00:00.000Z"
+          }
+        ]
+      },
+      "visualizations": [
+        {
+          "id": "ef73e565-71c5-4008-896c-69383fb9875b",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        }
+      ]
+    },
+    {
+      "id": "e08815d8-967d-4c2f-a71f-e357e322f7f2",
+      "name": "GWAS discoveries",
+      "description": "",
+      "query": "with T as (\n  select\n    *\n  from\n    gwas_catalog.full\n  where\n    cast(DATE as Date) <= '{{ Year }}'\n)\nselect\n  DATE,\n  sum(count(DATE)) over (\n    order by\n      DATE rows unbounded preceding\n  ) as cumulative_associations\nfrom\n  T\ngroup by\n  DATE\norder by\n  DATE",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337112790",
+        "visualization_control_order": [
+          "Year"
+        ],
+        "parameters": [
+          {
+            "title": "Year",
+            "name": "Year",
+            "type": "date",
+            "global": false,
+            "parentQueryId": "e08815d8-967d-4c2f-a71f-e357e322f7f2",
+            "locals": [],
+            "urlPrefix": "p_",
+            "value": "2023-01-31",
+            "$$value": "2023-01-31T06:00:00.000Z"
+          }
+        ]
+      },
+      "visualizations": [
+        {
+          "id": "655995f9-71fc-44d6-8cc0-6a67706c81d0",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        },
+        {
+          "id": "78a002fb-d43e-46bb-b63b-2ef260f0f83e",
+          "type": "CHART",
+          "name": "Chart",
+          "description": "",
+          "options": {
+            "version": 2,
+            "globalSeriesType": "column",
+            "sortX": true,
+            "sortY": true,
+            "legend": {
+              "traceorder": "normal"
+            },
+            "xAxis": {
+              "type": "-",
+              "labels": {
+                "enabled": true
+              }
+            },
+            "yAxis": [
+              {
+                "type": "-"
+              },
+              {
+                "type": "-",
+                "opposite": true
+              }
+            ],
+            "alignYAxesAtZero": true,
+            "error_y": {
+              "type": "data",
+              "visible": true
+            },
+            "series": {
+              "stacking": null,
+              "error_y": {
+                "type": "data",
+                "visible": true
+              }
+            },
+            "seriesOptions": {
+              "column_a68105694703": {
+                "name": "cumulative_associations",
+                "yAxis": 0,
+                "type": "column"
+              }
+            },
+            "valuesOptions": {},
+            "direction": {
+              "type": "counterclockwise"
+            },
+            "sizemode": "diameter",
+            "coefficient": 1,
+            "numberFormat": "0,0[.]00000",
+            "percentFormat": "0[.]00%",
+            "textFormat": "",
+            "missingValuesAsZero": true,
+            "useAggregationsUi": true,
+            "swappedAxes": false,
+            "dateTimeFormat": "YYYY-MM-DD HH:mm",
+            "showDataLabels": false,
+            "columnConfigurationMap": {
+              "x": {
+                "column": "DATE",
+                "id": "column_a68105694702"
+              },
+              "y": [
+                {
+                  "column": "cumulative_associations",
+                  "transform": "SUM",
+                  "id": "column_a68105694703"
+                }
+              ]
+            },
+            "isAggregationOn": true,
+            "hideYAxes": false,
+            "condensed": true,
+            "withRowNumber": true
+          },
+          "query_plan": {
+            "selects": [
+              {
+                "column": "DATE"
+              },
+              {
+                "function": "SUM",
+                "args": [
+                  {
+                    "column": "cumulative_associations"
+                  }
+                ],
+                "alias": "column_a68105694703"
+              }
+            ],
+            "groups": [
+              {
+                "column": "DATE"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "b8e0fdf2-b958-4b63-a46f-e4ec3674ca02",
+      "name": "GWAS geographical distribution",
+      "description": "",
+      "query": "with T as (\n  select\n    explode(split(COUNTRY_OF_RECRUITMENT, \", \")) as country\n  from\n    gwas_catalog.ancestry\n  where\n    cast(DATE as Date) <= '{{ Year }}'\n)\nselect\n  count(country) as count,\n  replace(\n    replace(country, \"U.K.\", \"United Kingdom\"),\n    \"U.S.\",\n    \"United States\"\n  ) as country\nfrom\n  T\ngroup by\n  country\norder by\n  count",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337117167",
+        "visualization_control_order": [
+          "Year"
+        ],
+        "catalog": "hive_metastore",
+        "schema": "default",
+        "parameters": [
+          {
+            "title": "Year",
+            "name": "Year",
+            "type": "date",
+            "global": false,
+            "parentQueryId": "b8e0fdf2-b958-4b63-a46f-e4ec3674ca02",
+            "locals": [],
+            "urlPrefix": "p_",
+            "value": "2023-01-31",
+            "$$value": "2023-01-31T06:00:00.000Z"
+          }
+        ]
+      },
+      "visualizations": [
+        {
+          "id": "080770fd-9a88-4387-959f-2abf85743af1",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        },
+        {
+          "id": "19755a60-d04e-4300-9f78-079066308c14",
+          "type": "CHOROPLETH",
+          "name": "Country of Origin",
+          "description": "",
+          "options": {
+            "mapType": "countries",
+            "keyColumn": "country",
+            "targetField": "name_long",
+            "valueColumn": "count",
+            "clusteringMode": "k",
+            "steps": 5,
+            "valueFormat": "0,0.00",
+            "noValuePlaceholder": "N/A",
+            "colors": {
+              "min": "#E92828",
+              "max": "#002FB4",
+              "background": "#ffffff",
+              "borders": "#ffffff",
+              "noValue": "#dddddd"
+            },
+            "legend": {
+              "visible": true,
+              "position": "bottom-left",
+              "alignText": "right"
+            },
+            "tooltip": {
+              "enabled": true,
+              "template": "<b>{{ @@name }}</b>: {{ @@value }}"
+            },
+            "popup": {
+              "enabled": true,
+              "template": "Region: <b>{{ @@name }}</b>\n<br>\nValue: <b>{{ @@value }}</b>"
+            }
+          },
+          "query_plan": null
+        }
+      ]
+    },
+    {
+      "id": "0b4534b9-63e2-4c4d-8cd2-043183424dfc",
+      "name": "Genes",
+      "description": "",
+      "query": "with T1 as (\n  with T as (\n    select\n      *\n    from\n      gwas_catalog.full\n    where\n      cast(DATE as Date) <= '{{ Year }}'\n  ) (\n    select\n      distinct explode(split(MAPPED_GENE, \", \")) as gene,\n      CHR_ID,\n      CHR_POS\n    from\n      T\n  )\n)\nselect\n  count(gene) as count,\n  gene\nfrom\n  T1\ngroup by\n  gene\norder by\n  count desc",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337117368",
+        "visualization_control_order": [
+          "Year"
+        ],
+        "catalog": "hive_metastore",
+        "schema": "default",
+        "parameters": [
+          {
+            "title": "Year",
+            "name": "Year",
+            "type": "date",
+            "global": false,
+            "parentQueryId": "0b4534b9-63e2-4c4d-8cd2-043183424dfc",
+            "locals": [],
+            "urlPrefix": "p_",
+            "value": "2023-01-31",
+            "$$value": "2023-01-31T06:00:00.000Z"
+          }
+        ]
+      },
+      "visualizations": [
+        {
+          "id": "8bc2c60f-f88b-449b-b42c-f342695f3bee",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        }
+      ]
+    },
+    {
+      "id": "1dc6d149-7757-4e04-a902-5295ec42eb72",
+      "name": "Journals",
+      "description": "",
+      "query": "with F as (\n  with Z as (\n    with G as (\n      with T as (\n        select\n          JOURNAL,\n          DATE,\n          count(*) over () as tmp\n        from\n          gwas_catalog.full\n        where\n          cast(DATE as Date) <= '{{ Year }}'\n      )\n      select\n        count(JOURNAL) as count,\n        JOURNAL\n      from\n        T\n      group by\n        JOURNAL\n      order by\n        count\n    )\n    select\n      count,\n      JOURNAL,\n      RANK () OVER(\n        ORDER BY\n          count DESC\n      ) AS journal_rank\n    from\n      G\n  )\n  select\n    count,\n    case\n      when journal_rank > 16 then \"other\"\n      else JOURNAL\n    end as journal\n  from\n    Z\n)\nselect\n  sum(count) as total,\n  journal\nfrom\n  F\ngroup by\n  journal\norder by\n  total",
+      "options": {
+        "parent": "folders/582648450001760",
+        "apply_auto_limit": true,
+        "folder_node_status": "ACTIVE",
+        "folder_node_internal_name": "tree/791251337116973",
+        "visualization_control_order": [
+          "Year"
+        ],
+        "catalog": "hive_metastore",
+        "schema": "default",
+        "parameters": [
+          {
+            "title": "Year",
+            "name": "Year",
+            "type": "date",
+            "global": false,
+            "parentQueryId": "1dc6d149-7757-4e04-a902-5295ec42eb72",
+            "locals": [],
+            "urlPrefix": "p_",
+            "value": "2023-01-31",
+            "$$value": "2023-01-31T06:00:00.000Z"
+          }
+        ]
+      },
+      "visualizations": [
+        {
+          "id": "52647e9c-065c-4cf3-8539-d7712eefe667",
+          "type": "CHART",
+          "name": "Journal representation",
+          "description": "",
+          "options": {
+            "version": 2,
+            "globalSeriesType": "pie",
+            "sortX": true,
+            "sortY": true,
+            "legend": {
+              "traceorder": "normal"
+            },
+            "xAxis": {
+              "type": "-",
+              "labels": {
+                "enabled": true
+              }
+            },
+            "yAxis": [
+              {
+                "type": "-"
+              },
+              {
+                "type": "-",
+                "opposite": true
+              }
+            ],
+            "alignYAxesAtZero": true,
+            "error_y": {
+              "type": "data",
+              "visible": true
+            },
+            "series": {
+              "stacking": null,
+              "error_y": {
+                "type": "data",
+                "visible": true
+              }
+            },
+            "seriesOptions": {
+              "column_a68105696391": {
+                "name": "total",
+                "yAxis": 0,
+                "type": "pie"
+              }
+            },
+            "valuesOptions": {},
+            "direction": {
+              "type": "counterclockwise"
+            },
+            "sizemode": "diameter",
+            "coefficient": 1,
+            "numberFormat": "0,0[.]00000",
+            "percentFormat": "0[.]00%",
+            "textFormat": "",
+            "missingValuesAsZero": true,
+            "useAggregationsUi": true,
+            "swappedAxes": false,
+            "dateTimeFormat": "YYYY-MM-DD HH:mm",
+            "showDataLabels": true,
+            "columnConfigurationMap": {
+              "x": {
+                "column": "journal",
+                "id": "column_a68105696390"
+              },
+              "y": [
+                {
+                  "column": "total",
+                  "transform": "SUM",
+                  "id": "column_a68105696391"
+                }
+              ]
+            }
+          },
+          "query_plan": {
+            "selects": [
+              {
+                "column": "journal"
+              },
+              {
+                "function": "SUM",
+                "args": [
+                  {
+                    "column": "total"
+                  }
+                ],
+                "alias": "column_a68105696391"
+              }
+            ],
+            "groups": [
+              {
+                "column": "journal"
+              }
+            ]
+          }
+        },
+        {
+          "id": "e9c60fa8-e536-4e2b-b809-3dde1bd75cba",
+          "type": "TABLE",
+          "name": "Results",
+          "description": "",
+          "options": {
+            "version": 2
+          },
+          "query_plan": null
+        }
+      ]
+    }
+  ],
+  "dashboard": {
+    "id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+    "name": "Genome Wide Association Study Catalog",
+    "widgets": [
+      {
+        "id": "29ae653e-55b7-4143-abb8-729704a6abc1",
+        "width": 1,
+        "options": {
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 1,
+            "sizeY": 8,
+            "minSizeX": 1,
+            "maxSizeX": 6,
+            "minSizeY": 1,
+            "maxSizeY": 1000,
+            "col": 1,
+            "row": 0
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "### Progress in Genetic Association Studies\nStudies to link genetic variant data to diseases on a genome-wide scale began in the late 2000s. Research has been conducted by national governments, academic research labs, and direct-to-consumer genetic testing companies."
+      },
+      {
+        "id": "7577d59c-bc60-448f-9a90-20706b14e6f6",
+        "width": 1,
+        "options": {
+          "parameterMappings": {
+            "Year": {
+              "name": "Year",
+              "type": "dashboard-level",
+              "mapTo": "Year",
+              "value": null,
+              "title": ""
+            }
+          },
+          "title": "Articles - Study Counts",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 1,
+            "sizeY": 8,
+            "minSizeX": 1,
+            "maxSizeX": 6,
+            "minSizeY": 1,
+            "maxSizeY": 1000,
+            "col": 0,
+            "row": 0
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "68221177-fa55-41c7-9460-04797b938f81"
+      },
+      {
+        "id": "edde6c7c-fcd9-4179-b4c1-4ff8ce4050c2",
+        "width": 1,
+        "options": {
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 1,
+            "sizeY": 8,
+            "minSizeX": 1,
+            "maxSizeX": 6,
+            "minSizeY": 1,
+            "maxSizeY": 1000,
+            "col": 2,
+            "row": 0
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "![alt text](https://databricks.com/wp-content/themes/databricks/assets/images/databricks-logo.png)\n\n# [notebook](https://e2-demo-field-eng.cloud.databricks.com/?o=1444828305810485#notebook/4156927442761870/command/4156927442761901)\n\nplease rerun notebook and update date on top left before refreshing dashboard"
+      },
+      {
+        "id": "dc3b04b1-060e-4901-8e1b-10f8c0890033",
+        "width": 1,
+        "options": {
+          "parameterMappings": {
+            "Year": {
+              "name": "Year",
+              "type": "dashboard-level",
+              "mapTo": "Year",
+              "value": null,
+              "title": ""
+            }
+          },
+          "title": "Country of Origin - GWAS geographical distribution",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 3,
+            "sizeY": 8,
+            "minSizeX": 2,
+            "maxSizeX": 6,
+            "minSizeY": 1,
+            "maxSizeY": 1000,
+            "col": 3,
+            "row": 0
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "19755a60-d04e-4300-9f78-079066308c14"
+      },
+      {
+        "id": "252ab5e8-4f8c-45b8-b342-22efa4dcc82e",
+        "width": 1,
+        "options": {
+          "parameterMappings": {
+            "Year": {
+              "name": "Year",
+              "type": "dashboard-level",
+              "mapTo": "Year",
+              "value": null,
+              "title": ""
+            }
+          },
+          "title": "Journal representation - Journals",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 3,
+            "sizeY": 8,
+            "minSizeX": 1,
+            "maxSizeX": 6,
+            "minSizeY": 5,
+            "maxSizeY": 1000,
+            "col": 0,
+            "row": 8
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "52647e9c-065c-4cf3-8539-d7712eefe667"
+      },
+      {
+        "id": "9cd3f56e-6a80-4c1b-b991-eb81dc8abd25",
+        "width": 1,
+        "options": {
+          "parameterMappings": {
+            "Year": {
+              "name": "Year",
+              "type": "dashboard-level",
+              "mapTo": "Year",
+              "value": null,
+              "title": ""
+            }
+          },
+          "title": "Chart - GWAS discoveries",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 3,
+            "sizeY": 8,
+            "minSizeX": 1,
+            "maxSizeX": 6,
+            "minSizeY": 5,
+            "maxSizeY": 1000,
+            "col": 3,
+            "row": 8
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "78a002fb-d43e-46bb-b63b-2ef260f0f83e"
+      },
+      {
+        "id": "e3017b92-b7ca-4c35-aac9-7709b059f3b3",
+        "width": 1,
+        "options": {
+          "parameterMappings": {
+            "Year": {
+              "name": "Year",
+              "type": "dashboard-level",
+              "mapTo": "Year",
+              "value": null,
+              "title": ""
+            }
+          },
+          "title": "Results - Diseases / traits",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 3,
+            "sizeY": 14,
+            "minSizeX": 2,
+            "maxSizeX": 6,
+            "minSizeY": 1,
+            "maxSizeY": 1000,
+            "col": 0,
+            "row": 16
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "ef73e565-71c5-4008-896c-69383fb9875b"
+      },
+      {
+        "id": "9e5baca2-7637-440a-9ba9-c38bee4f3da8",
+        "width": 1,
+        "options": {
+          "parameterMappings": {
+            "Year": {
+              "name": "Year",
+              "type": "dashboard-level",
+              "mapTo": "Year",
+              "value": null,
+              "title": ""
+            }
+          },
+          "title": "Variant type - Distributions of associations",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 3,
+            "sizeY": 8,
+            "minSizeX": 1,
+            "maxSizeX": 6,
+            "minSizeY": 5,
+            "maxSizeY": 1000,
+            "col": 3,
+            "row": 16
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "05ed584c-1679-4716-b5fe-08b0b97ee951"
+      },
+      {
+        "id": "ef738a79-a4bd-40ce-9566-f77681cfaca5",
+        "width": 1,
+        "options": {
+          "parameterMappings": {
+            "Year": {
+              "name": "Year",
+              "type": "dashboard-level",
+              "mapTo": "Year",
+              "value": null,
+              "title": ""
+            }
+          },
+          "title": "Results - Genes",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 3,
+            "sizeY": 14,
+            "minSizeX": 2,
+            "maxSizeX": 6,
+            "minSizeY": 1,
+            "maxSizeY": 1000,
+            "col": 3,
+            "row": 24
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "8bc2c60f-f88b-449b-b42c-f342695f3bee"
+      },
+      {
+        "id": "334691b1-948c-4c1e-a1b1-3f7a2a96b477",
+        "width": 1,
+        "options": {
+          "parameterMappings": {},
+          "title": "Results - Warmup JVM",
+          "description": "",
+          "isHidden": false,
+          "position": {
+            "autoHeight": false,
+            "sizeX": 3,
+            "sizeY": 3,
+            "minSizeX": 2,
+            "maxSizeX": 6,
+            "minSizeY": 1,
+            "maxSizeY": 1000,
+            "col": 3,
+            "row": 38
+          }
+        },
+        "dashboard_id": "8b5368ed-f182-4ddc-ad92-1ad2ca77fac5",
+        "text": "",
+        "visualization_id": "3196e705-6a10-4715-bb10-de4f4116b4cd"
+      }
+    ],
+    "tags": [
+      "genomics",
+      "gwas",
+      "hls",
+      "glow"
+    ],
+    "color_palette": null,
+    "dashboard_filters_enabled": false,
+    "parent": "folders/582648450001760",
+    "is_archived": false
+  },
+  "version": "1.0"
+}
