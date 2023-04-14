@@ -52,7 +52,8 @@ job_json = {
                     "source": "WORKSPACE"
                 },
                 "timeout_seconds": 0,
-                "email_notifications": {}
+                "email_notifications": {},
+                "task_key": "launch_benchmark"
             },
             {
                 "job_cluster_key": "gwas_single_node",
@@ -467,13 +468,11 @@ job_json = {
                     }
                 ]
             }
-
         ],
         "job_clusters": [
             {
                 "job_cluster_key": "gwas_glow_integration_test_photon",
                 "new_cluster": {
-                    "cluster_name": "gwas_glow_integration_test_photon",
                     "spark_version": "10.4.x-scala2.12",
                     "spark_conf": {
                         "spark.databricks.delta.preview.enabled": "true",
@@ -487,7 +486,7 @@ job_json = {
                         "spark.databricks.photon.allDataSources.enabled": "true",
                         "spark.databricks.photon.photonRowToColumnar.enabled": "true"
                     },
-                    "node_type_id": {"AWS": "i4i.16xlarge", "MSA": "Standard_L16as_v3", "GCP": "n2-highmem-16"},
+                    "node_type_id": {"AWS": "i4i.2xlarge", "MSA": "Standard_L16as_v3", "GCP": "n2-highmem-16"},
                     "custom_tags": {
                         "project": "glow",
                         "domain": "genomics",
@@ -510,12 +509,11 @@ job_json = {
             {
                 "job_cluster_key": "gwas_glow_integration_test_standard",
                 "new_cluster": {
-                    "cluster_name": "gwas_glow_integration_test_standard",
                     "spark_version": "10.4.x-scala2.12",
                     "spark_conf": {
                         "spark.databricks.delta.preview.enabled": "true"
                     },
-                    "node_type_id": {"AWS": "i4i.32xlarge", "MSA": "Standard_L32as_v3", "GCP": "n2-highmem-32"},
+                    "node_type_id": {"AWS": "i4i.4xlarge", "MSA": "Standard_L32as_v3", "GCP": "n2-highmem-32"},
                     "custom_tags": {
                         "project": "glow",
                         "domain": "genomics",
@@ -537,7 +535,6 @@ job_json = {
             {
                 "job_cluster_key": "gwas_single_node",
                 "new_cluster": {
-                    "cluster_name": "gwas_single_node",
                     "spark_version": "10.4.x-scala2.12",
                     "spark_conf": {
                         "spark.databricks.delta.preview.enabled": "true",
