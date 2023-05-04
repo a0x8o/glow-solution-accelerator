@@ -6,11 +6,11 @@
 
 # MAGIC %md
 # MAGIC ##### run metadata
-# MAGIC 
+# MAGIC
 # MAGIC Warning: this will only work in Databricks
-# MAGIC 
+# MAGIC
 # MAGIC It requires the databricks-cli to be installed via pip 
-# MAGIC 
+# MAGIC
 # MAGIC (this is included in the `projectglow/databricks-glow` docker container)
 
 # COMMAND ----------
@@ -103,7 +103,11 @@ node_to_core_mapping = {"r5d.2xlarge": 8,
                         "Standard_L8s_v2": 8,
                         "Standard_L16s_v2": 16,
                         "Standard_L32s_v2": 32,
-                        "Standard_L64s_v2": 64
+                        "Standard_L64s_v2": 64,
+                        "Standard_L8as_v3": 8,
+                        "Standard_L16as_v3": 16,
+                        "Standard_L32as_v3": 32,
+                        "Standard_L64as_v3": 64
                        } 
 
 # COMMAND ----------
